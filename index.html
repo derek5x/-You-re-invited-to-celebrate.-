@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Flip Book Invitation</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .envelope {
+      width: 400px;
+      height: 250px;
+      background: linear-gradient(135deg, #6a95ff, #4a6ed9);
+      position: relative;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 380px;
+      height: 180px;
+      background: #5a85ff;
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      z-index: 1;
+    }
+
+    .envelope span {
+      position: relative;
+      z-index: 2;
+      font-size: 22px;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.5;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .flipbook {
+      display: none;
+      width: 400px;
+      height: 500px;
+      position: relative;
+      margin-top: 20px;
+      perspective: 1000px;
+    }
+
+    .flipbook img {
+      width: 110%;
+      height: 120%;
+      object-fit: cover;
+      position: absolute;
+      backface-visibility: hidden;
+      transform: rotateY(0deg);
+      transition: transform 0.6s;
+    }
+
+    .flipbook img.hidden {
+      transform: rotateY(180deg);
+    }
+
+    .flipbook img.active {
+      z-index: 2;
+      transform: rotateY(0deg);
+    }
+  </style>
+</head>
+<body>
+  <!-- Envelope -->
+  <div class="envelope" onclick="openFlipbook()">
+    <span>Click to Open Your Invitation</span>
+  </div>
+
+  <!-- Flip Book -->
+  <div class="flipbook" id="flipbook">
+    <img src="1.jpg" alt="Page 1" class="active">
+    <img src="2.jpg" alt="Page 2" class="hidden">
+    <img src="3.jpg" alt="Page 3" class="hidden">
+  </div>
+  <script>
+    function openFlipbook() {
+      document.querySelector('.envelope').style.display = 'none';
+      document.getElementById('flipbook').style.display = 'block';
+    }
+
+    const images = document.querySelectorAll('.flipbook img');
+    let currentIndex = 0;
+
+    document.getElementById('flipbook').addEventListener('click', () => {
+      images[currentIndex].classList.remove('active');
+      images[currentIndex].classList.add('hidden');
+
+      currentIndex = (currentIndex + 1) % images.length;
+
+      images[currentIndex].classList.remove('hidden');
+      images[currentIndex].classList.add('active');
+    });
+  </script>
+</body>
+</html>
